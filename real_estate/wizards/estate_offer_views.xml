@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="estate_estate_apply_offer_form" model="ir.ui.view">
+            <field name="name">estate.estate.apply.offer.wizard.form</field>
+            <field name="model">estate.estate.apply.offer.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="discount"/>
+                        </group>
+                        <group>
+                            <footer>
+                                <button type="object" string="Apply Offer" class="btn-primary" name="action_apply_offer"/>
+                                <button type="object" string="Cancel" special="cancel" class="btn-danger"/>
+                            </footer>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_estate_apply_offer" model="ir.actions.act_window">
+   		    <field name="name">Apply Offer</field>
+            <field name="res_model">estate.estate.apply.offer.wizard</field>
+ 		    <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="real_estate.model_estate_estate"></field>
+            <field name="binding_view_types">list</field>
+ 	    </record>
+    </data>
+</odoo>

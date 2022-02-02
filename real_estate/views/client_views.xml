@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="estate_client_tree" model="ir.ui.view">
+            <field name="name">estate.client.tree</field>
+            <field name="model">estate.client</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="user_id"/>
+                    <field name="mobile"/>
+                    <field name="property_ids" />
+                    <field name="total_assets"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="estate_client_form" model="ir.ui.view">
+            <field name="name">estate.client.form</field>
+            <field name="model">estate.client</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="mobile"/>
+                        </group>
+                        <notebook>
+                            <page name="properties" string="Properties">
+                                <field name="property_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_client" model="ir.actions.act_window">
+   		    <field name="name">Client</field>
+            <field name="res_model">estate.client</field>
+ 		    <field name="view_mode">tree,form</field>
+ 	    </record>
+
+        <menuitem name="Client" id="menu_client_action" parent="menu_real_estate_root" action="action_client"/>
+    </data>
+</odoo>

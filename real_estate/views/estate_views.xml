@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="estate_estate_tree" model="ir.ui.view">
+            <field name="name">estate.estate.tree</field>
+            <field name="model">estate.estate</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="address"/>
+                    <field name="state"/>
+                    <field name="client_id"/>
+                    <field name="mobile_no"/>
+                    <field name="buyer_ids"/>
+                    <field name="price"/>
+                    <field name="discount"/>
+                    <field name="total"/>
+                    <field name="booking_start" string="Prebook Start" attrs="{'invisible': [('state', '=', 'ready')]} "/>
+                    <field name="booking_end" />
+                    <field name="booking_start" string="Buy Start" attrs="{'invisible': [('state', '!=', 'ready')]} "/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="estate_estate_form" model="ir.ui.view">
+            <field name="name">estate.estate.form</field>
+            <field name="model">estate.estate</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="address"/>
+                            <field name="state"/>
+                            <field name="buyer_ids" widget="many2many_tags" />
+                            <field name="price"/>
+                            <field name="total"/>
+                            <field name="booking_start" string="Prebook Start" attrs="{'invisible': [('state', '=', 'ready')]} "/>
+                            <field name="booking_start" string="Buy Start" attrs="{'invisible': [('state', '!=', 'ready')]} "/>
+                            <field name="booking_end"/>
+                            
+                            <notebook>
+                                <page name="Description_Page" string="Description">
+                                    <field name="description" />
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="estate_estate_search" model="ir.ui.view">
+            <field name="name">estate.estate.search</field>
+            <field name="model">estate.estate</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="total"/>
+                    <field name="name"/>
+                    <group>
+                        <filter name="location_group" string="Location" context="{'group_by':'address'}"/>
+                        <filter name="state_group" string="State" context="{'group_by':'state'}"/>
+                        <filter name="client_group" string="Client" context="{'group_by':'client_id'}"/>
+                    </group>
+                    <filter name="assigned_to_me" string="My Properties" domain="[('client_id.user_id','=', uid)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="estate_estate_calender" model="ir.ui.view">
+            <field name="name">estate.estate.calendar</field>
+            <field name="model">estate.estate</field>
+            <field name="arch" type="xml">
+                <calendar string="Properties Overview" date_start="booking_start" date_stop="booking_end" color="state" form_view_id="estate_estate_form">
+                    <field name="name" />
+                    <field name="client_id" filters="1" />
+                    <field name="total" />
+                </calendar>
+            </field>
+        </record>
+
+        <record id="estate_estate_view_graph" model="ir.ui.view">
+            <field name="name">estate.estate.view.graph</field>
+            <field name="model">estate.estate</field>
+            <field name="arch" type="xml">
+                <graph string="Properties Graph" type="bar">
+                    <field name="client_id" />
+                </graph>
+            </field>
+        </record>
+
+        <record id="estate_estate_view_kanban" model="ir.ui.view">
+            <field name="name">estate.estate.view.kanban</field>
+            <field name="model">estate.estate</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_estate" model="ir.actions.act_window">
+   		    <field name="name">Properties</field>
+            <field name="res_model">estate.estate</field>
+ 		    <field name="view_mode">tree,form,kanban,calendar,graph</field>
+            <field name="context">{'search_default_assigned_to_me':1, 'default_name':'New Property', 'is_my_property':1}</field>
+ 	    </record>
+  
+        <menuitem name="Real Estate" id="menu_real_estate_root"/>
+        <menuitem name="Estate" id="menu_real_estate" parent="menu_real_estate_root" action="action_estate"/>
+    </data>
+</odoo>

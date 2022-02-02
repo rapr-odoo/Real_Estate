@@ -1,0 +1,1 @@
+from . import estate, client, res_partner_extended

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="leased_property_tree" model="ir.ui.view">
+            <field name="name">leased.property.tree</field>
+            <field name="model">leased.property</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="property_id" />
+                    <field name="lessee_name" />
+                    <field name="lease_date" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="leased_property_form" model="ir.ui.view">
+            <field name="name">leased.property.form</field>
+            <field name="model">leased.property</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="property_id" />
+                                <field name="lessee_name" />
+                            </group>
+                            <group>
+                                <field name="lease_date" />
+                            </group>
+                            <footer>
+                                <button type="object" name="action_save" string="Done"/>
+                            </footer>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+
+        <record id="action_leased_property" model="ir.actions.act_window">
+   		    <field name="name">Properties</field>
+            <field name="res_model">leased.property</field>
+ 		    <field name="view_mode">tree,form,kanban,graph</field>
+ 	    </record>
+        
+        <menuitem
+            id="leased_property_menu_root"
+            name="Leased Property"
+            sequence="10"/>
+        <menuitem
+            id="leased_property_menu"
+            name="Property"
+            action="action_leased_property"
+            parent="leased_property_menu_root"
+            sequence="11"/>
+    </data>
+</odoo>
