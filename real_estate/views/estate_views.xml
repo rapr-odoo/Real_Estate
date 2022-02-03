@@ -89,16 +89,21 @@
             </field>
         </record>
 
-        <record id="estate_estate_view_kanban" model="ir.ui.view">
+        <record id="estate_estate_view_kanban" model="ir.ui.view" >
             <field name="name">estate.estate.view.kanban</field>
             <field name="model">estate.estate</field>
             <field name="arch" type="xml">
                 <kanban>
                     <templates>
-                        <t t-name="kanban-box">
-                            <t t-foreach="self" t-as="estate">
-                                
-                            </t>
+                        <t t-name="kanban-box" >
+                            <div class="oe_kanban_global_click">
+                                <strong><field name="name" /></strong>
+                                <ul>
+                                    <li><field name="address" /></li>
+                                    <li><field name="state" /></li>
+                                    <li><field name="total" /></li>
+                                </ul>
+                            </div>
                         </t>
                     </templates>
                 </kanban>
