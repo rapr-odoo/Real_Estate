@@ -32,6 +32,7 @@
         <field name="name">Administrator</field>
         <field name="category_id" ref="category_real_estate_sub"/>
         <field name="implied_ids" eval="[(4, ref('group_real_estate_employee'))]" />
+        <!-- To give Admin(admin) User and System(Root) user Administrator Rights -->
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin')) ]" />
     </record>
 
@@ -64,4 +65,14 @@
         <field name="groups" eval="[(4, ref('real_estate.group_real_estate_admin')), (4, ref('real_estate.group_real_estate_employee'))]" /> 
     </record>
 </data>
+
+<data noupdate="0">
+    
+    <!-- To give newely created users Client Group Access Rights by default -->
+    <record id="base.default_user" model="res.users">
+        <field name="groups_id" eval="[(4, ref('real_estate.group_real_estate_client'))]" />
+    </record>
+
+</data>
+
 </odoo>

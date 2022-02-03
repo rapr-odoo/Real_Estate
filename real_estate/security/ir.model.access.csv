@@ -5,5 +5,5 @@ access_real_estate_estate_admin,real.estate.estate.admin,model_estate_estate,rea
 access_real_estate_client_client,real.estate.client.client,model_estate_client,real_estate.group_real_estate_client,1,1,0,0
 access_real_estate_client_employee,real.estate.client.employee,model_estate_client,real_estate.group_real_estate_employee,1,1,1,0
 access_real_estate_client_admin,real.estate.client.admin,model_estate_client,real_estate.group_real_estate_admin,1,1,1,1
-access_real_estate_estate_offer_wizard,real.estate.estate.offer.wizard,real_estate.group_real_estate_employee,1,1,1,0
-access_real_estate_estate_offer_wizard,real.estate.estate.offer.wizard,real_estate.group_real_estate_admin,1,1,1,0
+access_real_estate_estate_offer_wizard_employee,real.estate.estate.offer.wizard.employee,model_estate_estate_apply_offer_wizard,real_estate.group_real_estate_employee,1,1,1,0
+access_real_estate_estate_offer_wizard_client,real.estate.estate.offer.wizard.client,model_estate_estate_apply_offer_wizard,real_estate.group_real_estate_admin,1,1,1,1

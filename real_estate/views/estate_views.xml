@@ -34,7 +34,7 @@
                             <field name="state"/>
                             <field name="buyer_ids" widget="many2many_tags" />
                             <field name="price"/>
-                            <field name="total"/>
+                            <field name="client_id"/>
                             <field name="booking_start" string="Prebook Start" attrs="{'invisible': [('state', '=', 'ready')]} "/>
                             <field name="booking_start" string="Buy Start" attrs="{'invisible': [('state', '!=', 'ready')]} "/>
                             <field name="booking_end"/>
@@ -96,7 +96,9 @@
                 <kanban>
                     <templates>
                         <t t-name="kanban-box">
-                            
+                            <t t-foreach="self" t-as="estate">
+                                
+                            </t>
                         </t>
                     </templates>
                 </kanban>
