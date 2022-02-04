@@ -30,7 +30,7 @@ class estate(models.Model):
     booking_start = fields.Date(default=fields.Date.today())
     booking_end = fields.Date(states={'ready':[('invisible', 1)]}, string="Prebook End", invisible=0, default= (fields.Date.today() + relativedelta(days=30)))
     # buyer_ids = fields.Many2many(comodel_name='res.partner', relation="estate_estate_buyer_res_partner_many2many", column1="name", column2="display_name", string="Buyer", help="Many2many 2 field with res.partner fetching buyer names", domain="[('is_buyer', '=', 'true')]")
-    buyer = fields.Many2one('res.partner' , compute='_get_buyer')
+    buyer = fields.Many2one('res.partner' , compute='_get_buyer', store=False)
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
     @api.onchange('booking_start')
@@ -77,16 +77,20 @@ class estate(models.Model):
             # property.buyer = self.env['estate.property.offer'].browse(self.env['estate.property.offer'].search([('status','=','accepted')], limit=1))
             # Id = self.env['estate.property.offer'].search([('status','=','accepted')], limit=1)
             offer_ids = property.offer_ids
-            for offer_id in offer_ids:
-                print("IN Get Buyer :::", property.name, ' ::: ', offer_id.buyer_id)
-                if offer_id and offer_id.status == 'accepted':
-                    print("IN Get Buyer :::", offer_id.buyer_id)
-                    property.buyer = offer_id.buyer_id
-                    break
-                else:
-                    property.buyer = False
+            print("Offer IDS ::: ", offer_ids, ":::", len(offer_ids))
+            if offer_ids:
+                for offer_id in offer_ids:
+                    print("IN Get Buyer :::", property.name, property.buyer, ' ::: ', offer_id.buyer_id)
+                    if offer_id and offer_id.status == 'accepted':
+                        print("IN Get Buyer :::", offer_id.buyer_id)
+                        property.buyer = offer_id.buyer_id
+                        print("Done Get Buyer :::", property.buyer)
+                        break
+                    else:
+                        property.buyer = False
+            else:
+                property.buyer = False
                     
-            
             
 class EstateOffers(models.Model):
     _name = "estate.property.offer"
@@ -108,4 +112,3 @@ class EstateOffers(models.Model):
         else:
             self.property_id.buyer = False
             print("Rejected ::: ", self.property_id.buyer)
-            
