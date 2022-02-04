@@ -18,7 +18,8 @@ This module was made for internship purpose
         'views/client_views.xml',
         'views/partner_views.xml',
         
-        'wizards/estate_offer_views.xml'
+        'wizards/estate_offer_views.xml',
+        'wizards/property_offer_views.xml'
     ],
     'installable': True,
     'application': True,

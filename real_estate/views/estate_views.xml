@@ -11,7 +11,7 @@
                     <field name="state"/>
                     <field name="client_id"/>
                     <field name="mobile_no"/>
-                    <field name="buyer_ids"/>
+                    <field name="buyer"/>
                     <field name="price"/>
                     <field name="discount"/>
                     <field name="total"/>
@@ -32,16 +32,20 @@
                             <field name="name"/>
                             <field name="address"/>
                             <field name="state"/>
-                            <field name="buyer_ids" widget="many2many_tags" />
+                            <field name="buyer"/>
                             <field name="price"/>
                             <field name="client_id"/>
                             <field name="booking_start" string="Prebook Start" attrs="{'invisible': [('state', '=', 'ready')]} "/>
                             <field name="booking_start" string="Buy Start" attrs="{'invisible': [('state', '!=', 'ready')]} "/>
                             <field name="booking_end"/>
-                            
+                        </group>
+                        <group>
                             <notebook>
                                 <page name="Description_Page" string="Description">
                                     <field name="description" />
+                                </page>
+                                <page name="Offers Page" string="Offers">
+                                    <field name="offer_ids" />
                                 </page>
                             </notebook>
                         </group>
@@ -107,6 +111,37 @@
                         </t>
                     </templates>
                 </kanban>
+            </field>
+        </record>
+
+
+        <!-- Offers Model Views -->
+
+        <record id="estate_property_offer_tree_view" model="ir.ui.view">
+            <field name="name">estate.property.offer.tree</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="buyer_id" />
+                    <field name="price" />
+                    <field name="status" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="estate_property_offer_form_view" model="ir.ui.view">
+            <field name="name">estate.property.offer.form</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group name="offer_form_fields" string="Offer Details">
+                            <field name="buyer_id" placeholder="Buyer Name" />
+                            <field name="price" />
+                            <field name="status" />
+                        </group>
+                    </sheet>
+                </form>
             </field>
         </record>
 

@@ -15,4 +15,4 @@ class leased_property(models.Model):
     @api.onchange('property_id')
     def _onchange_property_id(self):
         for record in self:
-            record.lessee_name = self.env['estate.client'].search([('id','=',record.client_id.id)], limit=1).name
+            record.lessee_name = self.env['estate.client'].search([('id','=',record.client_id.id)], limit=1).user_id.name

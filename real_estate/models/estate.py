@@ -1,4 +1,3 @@
-from email.policy import default
 from odoo import _, api, fields, models
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
@@ -13,8 +12,6 @@ class estate(models.Model):
         return fields.Datetime.now()
 
     def _get_default_end_date(self):
-        import pdb
-        pdb.set_trace()
         return fields.Datetime.now()
     
     def _get_default_description(self):
@@ -25,14 +22,16 @@ class estate(models.Model):
     mobile_no = fields.Char(related='client_id.mobile', string="Mobile No")
     description = fields.Html(string="Estate Details", copy=False, readonly=True, default=_get_default_description)
     address = fields.Char(help="Estate Address", string="Address")
-    state = fields.Selection([('ready', 'Ready To Be Sold'), ('construction', 'Under Construction'), ('prebook', 'Prebook')], string="State")
+    state = fields.Selection([('prebook', 'Prebook'), ('ready', 'Ready To Be Sold'), ('sold', 'Sold')], string="State")
     client_id = fields.Many2one('estate.client',string="Client", default=lambda self:self.env.user.id)
     price = fields.Float(string="Estate Cost")
     discount = fields.Float(string="Discount(%)", default=0)
     total = fields.Float(compute='_compute_total', inverse='_change_discount', search='_search_total', string='Final Price')
     booking_start = fields.Date(default=fields.Date.today())
     booking_end = fields.Date(states={'ready':[('invisible', 1)]}, string="Prebook End", invisible=0, default= (fields.Date.today() + relativedelta(days=30)))
-    buyer_ids = fields.Many2many(comodel_name='res.partner', relation="estate_estate_buyer_res_partner_many2many", column1="name", column2="display_name", string="Buyer", help="Many2many 2 field with res.partner fetching buyer names", domain="[('is_buyer', '=', 'true')]")
+    # buyer_ids = fields.Many2many(comodel_name='res.partner', relation="estate_estate_buyer_res_partner_many2many", column1="name", column2="display_name", string="Buyer", help="Many2many 2 field with res.partner fetching buyer names", domain="[('is_buyer', '=', 'true')]")
+    buyer = fields.Many2one('res.partner' , compute='_get_buyer')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
     @api.onchange('booking_start')
     def _change_booking_end(self):
@@ -72,3 +71,41 @@ class estate(models.Model):
     def _get_user_name(self):
         for record in self:
             record.user_name = self.env.user.name
+    
+    def _get_buyer(self):
+        for property in self:
+            # property.buyer = self.env['estate.property.offer'].browse(self.env['estate.property.offer'].search([('status','=','accepted')], limit=1))
+            # Id = self.env['estate.property.offer'].search([('status','=','accepted')], limit=1)
+            offer_ids = property.offer_ids
+            for offer_id in offer_ids:
+                print("IN Get Buyer :::", property.name, ' ::: ', offer_id.buyer_id)
+                if offer_id and offer_id.status == 'accepted':
+                    print("IN Get Buyer :::", offer_id.buyer_id)
+                    property.buyer = offer_id.buyer_id
+                    break
+                else:
+                    property.buyer = False
+                    
+            
+            
+class EstateOffers(models.Model):
+    _name = "estate.property.offer"
+    _description = "Helps you add Offers for buyers"
+    
+    price = fields.Float(string="Price")
+    status = fields.Selection([('accepted', 'Accepted'), ('rejected', 'Rejected')], copy=False)
+    buyer_id = fields.Many2one('res.partner', string="Buyer", required=True)
+    property_id = fields.Many2one('estate.estate', string="Property")
+    
+    @api.onchange('status')
+    def _onchange_status(self):
+        # self.ensure_one()
+        print("Status ::: ", self.status)
+        if self.status == 'accepted':
+            print("Accepted ::: ",  self.buyer_id, " :::: ", self.property_id.buyer)
+            self.property_id.buyer = self.buyer_id
+            print("Accepted ::: ", self.property_id.buyer, " :::: ")
+        else:
+            self.property_id.buyer = False
+            print("Rejected ::: ", self.property_id.buyer)
+            

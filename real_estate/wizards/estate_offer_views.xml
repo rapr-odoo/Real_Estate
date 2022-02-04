@@ -12,7 +12,7 @@
                         </group>
                         <group>
                             <footer>
-                                <button type="object" string="Apply Offer" class="btn-primary" name="action_apply_offer"/>
+                                <button type="object" string="Apply Discount" class="btn-primary" name="action_apply_offer"/>
                                 <button type="object" string="Cancel" special="cancel" class="btn-danger"/>
                             </footer>
                         </group>
@@ -22,7 +22,7 @@
         </record>
 
         <record id="action_estate_apply_offer" model="ir.actions.act_window">
-   		    <field name="name">Apply Offer</field>
+   		    <field name="name">Apply Discount</field>
             <field name="res_model">estate.estate.apply.offer.wizard</field>
  		    <field name="view_mode">form</field>
             <field name="target">new</field>
