@@ -11,22 +11,35 @@
                 <thead>
                     <th>Sequence</th>
                     <th>Name</th>
-                    <th>Description</th>
-                    <th>State</th>
+                    <th>Mobile</th>
+                    <th>Properties</th>
                 </thead>
                 <tbody>
                     <t t-set="sequence" t-value="0"/>
                     <t t-foreach="clients" t-as="client">
                         <t t-set="sequence" t-value="sequence + 1"/>
                         <!-- <tr t-att-class="sequence % 2 == 0 and 'o_even' or ''"> -->
-                        <tr t-attf-style="font-weight: bold;#{sequence % 2 == 0 and 'background: grey;' or ''}">
+                        <tr t-attf-style="font-weight: bold; #{sequence % 2 == 0 and 'background: #b653fc; opacity: 0.5;' or ''}">
                             <td><t t-out="sequence" /></td>
-                            <td><span t-field="client.user_id" /></td>
                             <td>
-                                <t t-if="client.property_ids[0].description" t-out="client.property_ids[0].description" />
-                                <t t-else="">No Description Available</t>
+                                <a t-attf-href="/client/#{client.id}">
+                                    <span t-field="client.user_id" />
+                                </a>
                             </td>
-                            <td><span t-field="client.property_ids[0].state"/></td>
+                            <td>
+                                <t t-if="client.mobile" t-out="client.mobile" />
+                                <t t-else="">No Mobile No</t>
+                            </td>
+                            <td>
+                                
+                                <t t-if="client.property_ids"> 
+                                    <t t-set="property_count" t-value="len(client.property_ids)"/>
+                                    <a t-attf-href="/client/{{client.id}}">
+                                        <t t-out="property_count"/> Properties 
+                                    </a> 
+                                </t>
+                                <t t-else="">No Properties</t>
+                            </td>
                         </tr>
                     </t>
                 </tbody>
@@ -57,15 +70,15 @@
                         <thead>
                             <th>Sequence</th>
                             <th>Name</th>
-                            <th>Description</th>
-                            <th>State</th>
+                            <th>Mobile</th>
+                            <th>Properties</th>
                         </thead>
                         <tbody>
                             <t t-set="sequence" t-value="0"/>
                             <t t-foreach="clients" t-as="client">
                                 <t t-set="sequence" t-value="sequence + 1"/>
                                 <!-- <tr t-att-class="sequence % 2 == 0 and 'o_even' or ''"> -->
-                                <tr t-attf-style="#{sequence % 2 == 0 and 'background: grey;' or ''}">
+                                <tr t-attf-style="#{sequence % 2 == 0 and 'background: #c4bb12;' or ''}">
                                     <td><t t-out="sequence" /></td>
                                     <td>
                                         <a t-attf-href="/client/#{client.id}">
@@ -73,10 +86,19 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <t t-if="client.property_ids[0].description" t-out="client.property_ids[0].description" />
-                                        <t t-else="">No Description Available</t>
+                                        <t t-if="client.mobile" t-out="client.mobile" />
+                                        <t t-else="">No Mobile No</t>
                                     </td>
-                                    <td><span t-field="client.property_ids[0].state"/></td>
+                                    <td>
+                                        
+                                        <t t-if="client.property_ids"> 
+                                            <t t-set="property_count" t-value="len(client.property_ids)"/>
+                                            <a t-attf-href="/client/{{client.id}}">
+                                                <t t-out="property_count"/> Properties 
+                                            </a> 
+                                        </t>
+                                        <t t-else="">No Properties</t>
+                                    </td>
                                 </tr>
                             </t>
                         </tbody>
@@ -91,16 +113,68 @@
         <div t-call="website.layout">
             <div class="container">
                 <div class="row">
-                    <div class="col-4">
-                        <div t-attf-style="padding-top: 50%; background-image: url(/web/image/client.client/#{client.id}/image_1024); background-size: cover; background-position:center"/>
-                        <div>
-                            <div>State of the Client</div>
-                            <div t-field="client.property_ids[0].state"/>
+                    <div class="col-3">
+                        <div t-attf-style="padding-top: 70%; background-image: url(/web/image/client.client/#{client.id}/image_1024); background-size: cover; background-position:center"/>
+                        <div class="text-center" t-attf-style="padding-top: 5%;">
+                            <div>
+                                <strong>Name: </strong><span t-field="client.user_id" />
+                            </div>
+                            <div>
+                                <strong>Mobile: </strong><span t-field="client.mobile" />
+                            </div>
                         </div>
                     </div>
-                    <div class="col-8 o_client_details">
-                        <div class="text-center font-weight-bold"><span t-field="client.user_id"/></div>
+                    <div class="col-9">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <th>Sequence</th>
+                                    <th>Property Name</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                    <th>Final Price</th>
+                                    <th>Buyer</th>
+                                    <th>Offers</th>
+                                </thead>
+                                <tbody>
+                                    <t t-set="sequence" t-value="0"/>
+                                    <t t-foreach="client.property_ids" t-as="property">
+                                        <t t-set="sequence" t-value="sequence + 1"/>
+                                        <tr t-attf-style="#{sequence % 2 == 0 and 'background: #c4bb12;' or ''}">
+                                            <td><t t-out="sequence" /></td>
+                                            <td>
+                                                <span t-field="property.name" />
+                                            </td>
+                                            <td>
+                                                <span t-field="property.address" />
+                                            </td>
+                                            <td>
+                                                <span t-field="property.state" />
+                                            </td>
+                                            <td>
+                                                <span t-field="property.total" />
+                                            </td>
+                                            <td>
+                                                <span t-field="property.buyer" />
+                                            </td>
+                                            <td>
+                                                <t t-if="property.offer_ids"> 
+                                                    <t t-set="offers_count" t-value="len(property.offer_ids)"/>
+                                                    <a t-attf-href="/offers/{{property.id}}">
+                                                        <t t-out="offers_count"/> Offers 
+                                                    </a> 
+                                                </t>
+                                                <t t-else="">No Offers</t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                </div>
+                <div class="col-8 o_client_details">
+                    <div class="text-center font-weight-bold"><span t-field="client.user_id"/></div>
                 </div>
             </div>
         </div>        
@@ -108,7 +182,7 @@
 
     <template id="client_description" name="Client Description" inherit_id="real_estate.client_details" customize_show="True">
         <xpath expr="//div[contains(@class, 'o_client_details')]" position="inside">
-            <div t-field="client.property_ids[0].description"></div>
+            <div t-field="client.mobile"></div>
         </xpath>
     </template>
 
