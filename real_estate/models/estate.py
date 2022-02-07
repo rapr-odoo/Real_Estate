@@ -32,6 +32,7 @@ class estate(models.Model):
     # buyer_ids = fields.Many2many(comodel_name='res.partner', relation="estate_estate_buyer_res_partner_many2many", column1="name", column2="display_name", string="Buyer", help="Many2many 2 field with res.partner fetching buyer names", domain="[('is_buyer', '=', 'true')]")
     buyer = fields.Many2one('res.partner' , compute='_get_buyer', store=False)
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+    property_image = fields.Binary(string="Property Image")
 
     @api.onchange('booking_start')
     def _change_booking_end(self):
@@ -101,14 +102,18 @@ class EstateOffers(models.Model):
     buyer_id = fields.Many2one('res.partner', string="Buyer", required=True)
     property_id = fields.Many2one('estate.estate', string="Property")
     
-    @api.onchange('status')
-    def _onchange_status(self):
-        # self.ensure_one()
-        print("Status ::: ", self.status)
-        if self.status == 'accepted':
-            print("Accepted ::: ",  self.buyer_id, " :::: ", self.property_id.buyer)
-            self.property_id.buyer = self.buyer_id
-            print("Accepted ::: ", self.property_id.buyer, " :::: ")
-        else:
-            self.property_id.buyer = False
-            print("Rejected ::: ", self.property_id.buyer)
+    def action_accepted(self):
+        self.ensure_one()
+        self.status = "accepted"
+        print("Accepted ::: ",  self.buyer_id, " :::: ", self.property_id.buyer)
+        self.property_id.buyer = self.buyer_id
+        print("Accepted ::: ", self.property_id.buyer, " :::: ")
+        self.property_id.state = 'sold'
+    
+    def action_rejected(self):
+        [print(x) for x in self]
+        self.ensure_one()
+        self.status = "rejected"
+        self.property_id.buyer = False
+        print("Rejected ::: ", self.property_id.buyer)
+        self.property_id.state = 'ready'

@@ -27,17 +27,24 @@
             <field name="model">estate.estate</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="ready,prebook,sold" />
+                    </header>
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="address"/>
-                            <field name="state"/>
-                            <field name="buyer"/>
-                            <field name="price"/>
-                            <field name="client_id"/>
-                            <field name="booking_start" string="Prebook Start" attrs="{'invisible': [('state', '=', 'ready')]} "/>
-                            <field name="booking_start" string="Buy Start" attrs="{'invisible': [('state', '!=', 'ready')]} "/>
-                            <field name="booking_end"/>
+                            <group>
+                                <field name="name"/>
+                                <field name="address"/>
+                                <field name="buyer"/>
+                                <field name="price"/>
+                                <field name="client_id"/>
+                                <field name="booking_start" string="Prebook Start" attrs="{'invisible': [('state', '=', 'ready')]} "/>
+                                <field name="booking_start" string="Buy Start" attrs="{'invisible': [('state', '!=', 'ready')]} "/>
+                                <field name="booking_end"/>
+                            </group>
+                            <group>
+                                <field name="property_image" widget='image' options='{"preview_image":"image_128", "accepted_file_extensions":"image/*" }' />
+                            </group>
                         </group>
                         <group>
                             <notebook>
@@ -121,9 +128,12 @@
             <field name="name">estate.property.offer.tree</field>
             <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree multi_edit="1">
                     <field name="buyer_id" />
-                    <field name="price" />
+                    <!-- &#61; refers to = HTML Escape Character -->
+                    <field name="price" decoration-warning="price &lt; 30000 and price &gt; 9999" decoration-danger="price &lt; 10000" />
+                    <button name="action_accepted" string="Accept" type="object" icon="fa-check" />
+                    <button name="action_rejected" string="Reject" type="object" icon="fa-times" />
                     <field name="status" />
                 </tree>
             </field>
@@ -137,8 +147,7 @@
                     <sheet>
                         <group name="offer_form_fields" string="Offer Details">
                             <field name="buyer_id" placeholder="Buyer Name" />
-                            <field name="price" />
-                            <field name="status" />
+                            <field name="price"  options="{'type': 'number', 'step': 5000 }" />
                         </group>
                     </sheet>
                 </form>

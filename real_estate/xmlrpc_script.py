@@ -4,8 +4,8 @@
 from xmlrpc.client import ServerProxy
 
 db = "odoo15-ent"
-user = "postgres"
-passw = "postgres"
+user = "admin"
+passw = "admin"
 
 # getting connection from server odoo server
 common = ServerProxy('http://rahul:8069/xmlrpc/2/common')
