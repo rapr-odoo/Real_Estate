@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 class client(models.Model):
     _name = "estate.client"
     _rec_name = "user_id"
+    
     mobile = fields.Char(help="Enter Your Mobile Number")
     user_id = fields.Many2one('res.users', string="Client Name")
     property_ids = fields.One2many('estate.estate','client_id', string="Properties")

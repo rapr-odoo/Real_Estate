@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="hello_fvworld" name="Hello World">
+    <template id="hello_world" name="Hello World">
         <h4><strong>Hello World</strong></h4>
     </template>
 

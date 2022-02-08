@@ -157,8 +157,13 @@
         <record id="action_estate" model="ir.actions.act_window">
    		    <field name="name">Properties</field>
             <field name="res_model">estate.estate</field>
- 		    <field name="view_mode">tree,form,kanban,calendar,graph</field>
-            <field name="context">{'search_default_assigned_to_me':1, 'default_name':'New Property', 'is_my_property':1}</field>
+ 		    <field name="view_mode">
+                 tree,form,kanban,calendar,graph
+            </field>
+            <field name="context">
+                {'search_default_assigned_to_me':1, 'default_name':'New Property', 'is_my_property':1,
+                'is_client': 0}
+            </field>
  	    </record>
   
         <menuitem name="Real Estate" id="menu_real_estate_root"/>
